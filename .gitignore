@@ -61,3 +61,5 @@ traces/*.json
 
 # Local intermediate artifacts
 scratch/
+teammate_handouts/
+*.zip
