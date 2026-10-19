@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crucible — Multi-Agent Code Review & Arbitration Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="logo-area">
+      <div class="logo-icon">⚖️</div>
+      <div>
+        <h1 class="logo-title">CRUCIBLE</h1>
+        <p class="logo-subtitle">Multi-Agent Code Review & Autonomous Arbitration</p>
+      </div>
+    </div>
+    <div class="system-status">
+      <span class="status-indicator online"></span>
+      <span id="system-status-text">Engine Ready</span>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    <!-- Left Pane: Code Submission & Scenarios -->
+    <section class="pane input-pane">
+      <div class="pane-header">
+        <h2>Source Code Input</h2>
+        <div class="scenario-buttons">
+          <button class="btn btn-scenario" onclick="loadScenario('A')">Scenario A (SQLi + Complexity)</button>
+          <button class="btn btn-scenario" onclick="loadScenario('B')">Scenario B (Clean)</button>
+          <button class="btn btn-scenario" onclick="loadScenario('C')">Scenario C (Adversarial)</button>
+          <button class="btn btn-scenario" onclick="loadScenario('D')">Scenario D (Bandit Fault)</button>
+        </div>
+      </div>
+
+      <div class="input-controls">
+        <div class="control-group">
+          <label for="input-language">Language</label>
+          <select id="input-language">
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="go">Go</option>
+          </select>
+        </div>
+        <div class="control-group flex-grow">
+          <label for="input-context">Context / Intent</label>
+          <input type="text" id="input-context" placeholder="e.g. Authentication service, payment endpoint">
+        </div>
+        <div class="control-group">
+          <label for="fault-toggle">Simulate Fault</label>
+          <select id="fault-toggle">
+            <option value="">None (Normal)</option>
+            <option value="bandit_scanner">Bandit Failure (Scenario D)</option>
+            <option value="ast_analyzer">AST Parse Error</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <textarea id="code-input" spellcheck="false" placeholder="# Paste your source code here or select a scenario above..."></textarea>
+      </div>
+
+      <div class="action-bar">
+        <button id="btn-submit" class="btn btn-primary" onclick="submitReview()">
+          <span class="btn-text">Execute Multi-Agent Review</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Right Pane: Real-Time Coordination Timeline & Report -->
+    <section class="pane output-pane">
+      <div class="pane-header">
+        <h2>Blackboard Coordination Timeline</h2>
+        <span id="round-indicator" class="badge badge-info">Round 0</span>
+      </div>
+
+      <div id="timeline" class="timeline">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">📡</div>
+          <p>Submit code to stream real-time blackboard communication and autonomous agent rulings.</p>
+        </div>
+      </div>
+
+      <!-- Final Report Panel -->
+      <div id="report-panel" class="report-panel hidden">
+        <div class="report-header">
+          <h3>Synthesis & Final Evaluation Report</h3>
+          <span id="report-verdict" class="badge"></span>
+        </div>
+        <div id="report-summary" class="report-summary"></div>
+        <div id="report-findings" class="report-findings"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
