@@ -55,9 +55,11 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Traces (Keep .gitkeep, ignore generated run traces)
-traces/*.json
+# Traces (Keep .gitkeep + canonical demo traces; ignore ad-hoc run traces)
+traces/run_*.json
 !traces/.gitkeep
+!traces/demo_scenario_*.json
+!traces/*_submission_excerpt.txt
 
 # Local intermediate artifacts
 scratch/

@@ -1,5 +1,6 @@
 // Crucible Web Dashboard Client Logic
 // Author: Arya Shah (Arya-A-Shah)
+// Updated for Phase 4: Full API integration with SSE live streaming
 
 const SCENARIOS = {
   A: `def login(username, password):
@@ -41,102 +42,238 @@ def run_query(user_id):
     return cur.fetchall()`
 };
 
+// Agent colour coding for timeline cards
+const AGENT_COLORS = {
+  orchestrator:     '#6c5ce7',
+  logic_reviewer:   '#00b894',
+  security_auditor: '#e17055',
+  style_doc_agent:  '#74b9ff',
+  system:           '#636e72',
+};
+
+const MSG_LABELS = {
+  plan:              '📋 Plan',
+  tool_call:         '🔧 Tool Call',
+  tool_result:       '✅ Tool Result',
+  finding:           '🔍 Finding',
+  fallback:          '⚠️ Fallback',
+  review:            '🔄 Review',
+  critique_request:  '🗣️ Critique Request',
+  critique_response: '💬 Critique Response',
+  arbitration:       '⚖️ Arbitration',
+  final_report:      '📊 Final Report',
+  termination_guard: '🛑 Termination Guard',
+  error:             '❌ Error',
+  stream_done:       '✔️ Stream Done',
+};
+
 function loadScenario(type) {
-  const code = SCENARIOS[type] || "";
-  document.getElementById("code-input").value = code;
-  if (type === "D") {
-    document.getElementById("fault-toggle").value = "bandit_scanner";
-  } else {
-    document.getElementById("fault-toggle").value = "";
-  }
+  const code = SCENARIOS[type] || '';
+  document.getElementById('code-input').value = code;
+  document.getElementById('fault-toggle').value =
+    type === 'D' ? 'bandit_scanner' : '';
 }
 
+// ---------------------------------------------------------------------------
+// submitReview — POST to /review and render results
+// ---------------------------------------------------------------------------
 async function submitReview() {
-  const code = document.getElementById("code-input").value.trim();
-  const language = document.getElementById("input-language").value;
-  const context = document.getElementById("input-context").value.trim();
-  const fault = document.getElementById("fault-toggle").value;
+  const code    = document.getElementById('code-input').value.trim();
+  const language = document.getElementById('input-language').value;
+  const context  = document.getElementById('input-context').value.trim();
+  const fault    = document.getElementById('fault-toggle').value;
 
-  if (!code) {
-    alert("Please enter or select source code first.");
-    return;
-  }
+  if (!code) { alert('Please enter or select source code first.'); return; }
 
-  const timeline = document.getElementById("timeline");
-  timeline.innerHTML = "";
-  document.getElementById("report-panel").classList.add("hidden");
-  const submitBtn = document.getElementById("btn-submit");
+  // Clear UI
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  document.getElementById('report-panel').classList.add('hidden');
+
+  const submitBtn = document.getElementById('btn-submit');
   submitBtn.disabled = true;
-  submitBtn.innerHTML = "<span>Analyzing Multi-Agent Graph...</span>";
+  submitBtn.querySelector('.btn-text').textContent = 'Analyzing…';
+
+  // Update status indicator
+  setStatus('running', 'Orchestrator Running…');
 
   try {
-    const response = await fetch("/review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch('/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         input_code: code,
-        input_language: language,
-        input_context: context || "Standard web review",
+        language,
+        context: context || 'Standard web review',
         fault_injection: fault
       })
     });
 
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ detail: response.statusText }));
+      throw new Error(err.detail || `HTTP ${response.status}`);
+    }
+
     const data = await response.json();
-    if (data.events) {
+
+    // Render all trace event cards
+    if (Array.isArray(data.events)) {
       data.events.forEach(evt => renderEventCard(evt));
     }
+
+    // Update round indicator
+    const roundEvents = (data.events || []).filter(e => e.message_type === 'plan');
+    if (roundEvents.length) {
+      document.getElementById('round-indicator').textContent =
+        `Round ${roundEvents.length}`;
+    }
+
+    // Render final report
     if (data.final_report) {
       renderFinalReport(data.final_report);
     }
+
+    setStatus('online', 'Engine Ready');
+
   } catch (err) {
     renderEventCard({
-      from_agent: "system",
-      message_type: "error",
+      from_agent: 'system',
+      to_agent: 'user',
+      message_type: 'error',
       summary: `Request failed: ${err.message}`,
       timestamp: new Date().toISOString()
     });
+    setStatus('online', 'Engine Ready');
   } finally {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = "<span>Execute Multi-Agent Review</span>";
+    submitBtn.querySelector('.btn-text').textContent = 'Execute Multi-Agent Review';
   }
 }
 
+// ---------------------------------------------------------------------------
+// renderEventCard — adds a single trace event to the live timeline
+// ---------------------------------------------------------------------------
 function renderEventCard(evt) {
-  const timeline = document.getElementById("timeline");
-  const card = document.createElement("div");
-  card.className = `event-card ${evt.message_type || ''}`;
+  const timeline = document.getElementById('timeline');
 
-  const time = evt.timestamp ? evt.timestamp.split("T")[1]?.slice(0, 8) : "";
+  // Remove empty-state placeholder on first card
+  const emptyState = document.getElementById('empty-state');
+  if (emptyState) emptyState.remove();
+
+  const card = document.createElement('div');
+  const msgType = evt.message_type || 'plan';
+  card.className = `event-card ${msgType}`;
+
+  const color = AGENT_COLORS[evt.from_agent] || '#b2bec3';
+  const label = MSG_LABELS[msgType] || msgType;
+  const time  = evt.timestamp ? evt.timestamp.split('T')[1]?.slice(0, 8) : '';
+
+  // Highlight arbitration and critique cards with amber accent
+  const isConflict = ['arbitration', 'critique_request', 'critique_response'].includes(msgType);
 
   card.innerHTML = `
-    <div class="card-header">
-      <span class="card-sender">${evt.from_agent} ➔ ${evt.to_agent}</span>
+    <div class="card-header" style="border-left: 3px solid ${color}; ${isConflict ? 'background: rgba(253,203,110,0.08);' : ''}">
+      <span class="card-sender" style="color:${color}">${evt.from_agent || '?'} ➔ ${evt.to_agent || '?'}</span>
+      <span class="card-badge">${label}</span>
       <span class="card-time">${time}</span>
     </div>
     <div class="card-body">
-      <strong>[${evt.message_type}]</strong> ${evt.summary}
+      ${evt.summary || ''}
+      ${evt.decision_rationale ? `<div class="card-rationale">💡 ${evt.decision_rationale.slice(0, 180)}</div>` : ''}
     </div>
   `;
+
   timeline.appendChild(card);
-  timeline.scrollTop = timeline.scrollHeight;
+
+  // Smooth scroll to latest card
+  card.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
+// ---------------------------------------------------------------------------
+// renderFinalReport — populates the bottom report panel
+// ---------------------------------------------------------------------------
 function renderFinalReport(report) {
-  const panel = document.getElementById("report-panel");
-  const summaryEl = document.getElementById("report-summary");
-  const findingsEl = document.getElementById("report-findings");
-  const verdictBadge = document.getElementById("report-verdict");
+  const panel      = document.getElementById('report-panel');
+  const summaryEl  = document.getElementById('report-summary');
+  const findingsEl = document.getElementById('report-findings');
+  const verdictBadge = document.getElementById('report-verdict');
 
-  panel.classList.remove("hidden");
-  verdictBadge.textContent = (report.overall_verdict || "COMPLETE").toUpperCase();
-  verdictBadge.className = `badge ${report.overall_verdict === "critical_issues_found" ? "badge-critical" : "badge-info"}`;
+  panel.classList.remove('hidden');
 
-  summaryEl.innerHTML = `<p>${report.synthesis_summary || ''}</p>`;
+  // Verdict badge
+  const verdict = report.overall_verdict || report.status || 'complete';
+  const isCritical = report.overall_severity === 'critical' || report.overall_severity === 'high';
+  verdictBadge.textContent = isCritical ? '🔴 CRITICAL ISSUES FOUND' : '🟢 REVIEW COMPLETE';
+  verdictBadge.className   = `badge ${isCritical ? 'badge-critical' : 'badge-info'}`;
 
-  let html = "<ul style='margin-top: 10px; padding-left: 20px;'>";
-  (report.ranked_findings || []).forEach(f => {
-    html += `<li><strong>[${f.severity.toUpperCase()}] line ${f.line_start}:</strong> ${f.evidence} <em>(${f.recommendation})</em></li>`;
-  });
-  html += "</ul>";
-  findingsEl.innerHTML = html;
+  // Executive summary
+  const summary = report.executive_summary || report.synthesis_summary || '';
+  summaryEl.innerHTML = `<p>${summary}</p>`;
+  if (report.metrics) {
+    const m = report.metrics;
+    summaryEl.innerHTML += `
+      <div class="metrics-row">
+        <span class="metric critical">🔴 Critical: ${m.critical ?? 0}</span>
+        <span class="metric high">🟠 High: ${m.high ?? 0}</span>
+        <span class="metric medium">🟡 Medium: ${m.medium ?? 0}</span>
+        <span class="metric low">🟢 Low: ${m.low ?? 0}</span>
+        <span class="metric info">ℹ️ Info: ${m.info ?? 0}</span>
+        <span class="metric rounds">🔄 Rounds: ${m.total_rounds ?? 1}</span>
+      </div>
+    `;
+  }
+
+  // Findings list
+  const findings = report.ranked_findings || report.all_issues || [];
+  if (findings.length === 0) {
+    findingsEl.innerHTML = '<p style="color: var(--success); padding: 8px 0;">✅ No significant issues detected.</p>';
+  } else {
+    const SCOLOR = { critical: '#ff7675', high: '#e17055', medium: '#fdcb6e', low: '#55efc4', info: '#74b9ff' };
+    let html = '<ul class="findings-list">';
+    findings.forEach(f => {
+      const sev = (f.severity || 'info').toLowerCase();
+      const color = SCOLOR[sev] || '#b2bec3';
+      html += `
+        <li class="finding-item">
+          <span class="finding-badge" style="background:${color}20; color:${color}; border:1px solid ${color}40">
+            ${sev.toUpperCase()}
+          </span>
+          <span class="finding-location">L${f.line_start}–${f.line_end}</span>
+          <span class="finding-category">[${f.category || ''}]</span>
+          <span class="finding-evidence">${f.evidence || ''}</span>
+          ${f.recommendation ? `<div class="finding-rec">💡 ${f.recommendation}</div>` : ''}
+          ${f.cwe_id ? `<span class="finding-cwe">${f.cwe_id}</span>` : ''}
+        </li>
+      `;
+    });
+    html += '</ul>';
+    findingsEl.innerHTML = html;
+  }
+
+  panel.scrollIntoView({ behavior: 'smooth' });
 }
+
+// ---------------------------------------------------------------------------
+// setStatus — update top-right status indicator
+// ---------------------------------------------------------------------------
+function setStatus(state, text) {
+  const dot  = document.querySelector('.status-indicator');
+  const span = document.getElementById('system-status-text');
+  dot.className  = `status-indicator ${state}`;
+  span.textContent = text;
+}
+
+// ---------------------------------------------------------------------------
+// On load: check /health and update indicator
+// ---------------------------------------------------------------------------
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/health');
+    if (res.ok) {
+      const d = await res.json();
+      setStatus('online', d.mock_mode ? 'Mock Mode — Ready' : 'Engine Ready');
+    }
+  } catch {
+    setStatus('offline', 'Server Unreachable');
+  }
+});

@@ -1,0 +1,651 @@
+[
+  {
+    "event_id": "6f5a87b7-3964-449b-863a-aa5e28cc3bde",
+    "run_id": "demo_scenario_c",
+    "seq": 1,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "orchestrator",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "plan",
+    "summary": "Triage complete (round 1): dispatching 3 agents — logic_reviewer, security_auditor, style_doc_agent.",
+    "payload": {
+      "agents": [
+        "logic_reviewer",
+        "security_auditor",
+        "style_doc_agent"
+      ],
+      "execution_order": "parallel",
+      "focus_areas": {},
+      "budget": 3,
+      "rationale": "Automated triage plan: full multi-agent inspection in parallel.",
+      "next_action": "dispatch_workers"
+    },
+    "tool_calls": [],
+    "decision_rationale": "Automated triage plan: full multi-agent inspection in parallel.",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "461db82f-78a0-4089-95e1-e2f3f191affa",
+    "run_id": "demo_scenario_c",
+    "seq": 2,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "orchestrator",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "plan",
+    "summary": "Dispatching 3 specialist worker agents.",
+    "payload": {
+      "agents": [
+        "logic_reviewer",
+        "security_auditor",
+        "style_doc_agent"
+      ]
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "11d33399-ed1b-436b-b82b-6d17a7170476",
+    "run_id": "demo_scenario_c",
+    "seq": 3,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: ast_analyzer",
+    "payload": {
+      "tool_name": "ast_analyzer"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "f0c35b56-02ea-477f-9c09-503d99b8fc4c",
+    "run_id": "demo_scenario_c",
+    "seq": 4,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool ast_analyzer completed in 0ms.",
+    "payload": {
+      "output": {
+        "valid": false,
+        "error": "SyntaxError at line 1: invalid syntax",
+        "line": 1,
+        "functions": [],
+        "classes": [],
+        "max_nesting_depth": 0,
+        "unreachable_blocks": []
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "ast_analyzer",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'valid': False, 'error': 'SyntaxError at line 1: invalid syntax', 'line': 1, 'functions': [], 'classes': [], 'max_nesting_depth': 0, 'unreachable_blocks': []}",
+        "duration_ms": 0,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "10c61049-100d-4043-a898-0b0df5427fbc",
+    "run_id": "demo_scenario_c",
+    "seq": 5,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: complexity_scorer",
+    "payload": {
+      "tool_name": "complexity_scorer"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "57c69dac-2e35-4adb-a48d-5bd1d7cf9501",
+    "run_id": "demo_scenario_c",
+    "seq": 6,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool complexity_scorer completed in 0ms.",
+    "payload": {
+      "output": {
+        "success": false,
+        "error": "Radon analysis failed: invalid syntax (<unknown>, line 1)",
+        "blocks": []
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "complexity_scorer",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'success': False, 'error': 'Radon analysis failed: invalid syntax (<unknown>, line 1)', 'blocks': []}",
+        "duration_ms": 0,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "971ae4ad-e841-490b-bbb5-1a5f5003564b",
+    "run_id": "demo_scenario_c",
+    "seq": 7,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "finding",
+    "summary": "Logic Reviewer reported 1 findings (confidence: 0.90).",
+    "payload": {
+      "agent": "logic_reviewer",
+      "round": 1,
+      "findings": [
+        {
+          "finding_id": "356fdeb0-9c95-4e4e-a27f-57902dabb472",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        }
+      ],
+      "overall_confidence": 0.9,
+      "tool_results_summary": [
+        {
+          "tool_name": "ast_analyzer",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Functions: 0",
+          "duration_ms": 0,
+          "fallback_used": false
+        },
+        {
+          "tool_name": "complexity_scorer",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Blocks analyzed: 0",
+          "duration_ms": 0,
+          "fallback_used": false
+        }
+      ],
+      "notes": "Mock findings generated for offline execution."
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "d3a7a803-0dbd-446d-8718-194cdf47329b",
+    "run_id": "demo_scenario_c",
+    "seq": 8,
+    "timestamp": "2026-10-19T21:28:30.563686+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: bandit_scanner",
+    "payload": {
+      "tool_name": "bandit_scanner"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "8d2cee8e-f108-4538-a91c-0c6cd4224e0a",
+    "run_id": "demo_scenario_c",
+    "seq": 9,
+    "timestamp": "2026-10-19T21:28:31.243842+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool bandit_scanner completed in 679ms.",
+    "payload": {
+      "output": {
+        "success": true,
+        "issues_count": 0,
+        "issues": [],
+        "metrics": {
+          "C:\\Users\\Aayush\\AppData\\Local\\Temp\\tmpi0t7nxq_.py": {
+            "loc": 1,
+            "nosec": 0,
+            "skipped_tests": 0
+          },
+          "_totals": {
+            "CONFIDENCE.HIGH": 0,
+            "CONFIDENCE.LOW": 0,
+            "CONFIDENCE.MEDIUM": 0,
+            "CONFIDENCE.UNDEFINED": 0,
+            "SEVERITY.HIGH": 0,
+            "SEVERITY.LOW": 0,
+            "SEVERITY.MEDIUM": 0,
+            "SEVERITY.UNDEFINED": 0,
+            "loc": 1,
+            "nosec": 0,
+            "skipped_tests": 0
+          }
+        }
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "bandit_scanner",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'success': True, 'issues_count': 0, 'issues': [], 'metrics': {'C:\\\\Users\\\\Aayush\\\\AppData\\\\Local\\\\Temp\\\\tmpi0t7nxq_.py': {'loc': 1, 'nosec': 0, 'skipped_tests': 0}, '_totals': {'CONFIDENCE.HIGH': 0, ",
+        "duration_ms": 679,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "4e0d1860-1763-4b13-b458-ff48e223dfd5",
+    "run_id": "demo_scenario_c",
+    "seq": 10,
+    "timestamp": "2026-10-19T21:28:31.243842+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: secret_detector",
+    "payload": {
+      "tool_name": "secret_detector"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "90cab1df-82df-48bc-a423-460d9c83625a",
+    "run_id": "demo_scenario_c",
+    "seq": 11,
+    "timestamp": "2026-10-19T21:28:31.243842+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool secret_detector completed in 0ms.",
+    "payload": {
+      "output": {
+        "success": true,
+        "secrets_found": 0,
+        "findings": []
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "secret_detector",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'success': True, 'secrets_found': 0, 'findings': []}",
+        "duration_ms": 0,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "985e84e7-da5b-49e4-acdd-93b76b2de0f0",
+    "run_id": "demo_scenario_c",
+    "seq": 12,
+    "timestamp": "2026-10-19T21:28:31.243842+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "finding",
+    "summary": "Security Auditor reported 1 findings (confidence: 0.90).",
+    "payload": {
+      "agent": "security_auditor",
+      "round": 1,
+      "findings": [
+        {
+          "finding_id": "20c32de9-9763-462b-b4d6-5009e1ea9188",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        }
+      ],
+      "overall_confidence": 0.9,
+      "tool_results_summary": [
+        {
+          "tool_name": "bandit_scanner",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Issues: 0",
+          "duration_ms": 679,
+          "fallback_used": false
+        },
+        {
+          "tool_name": "secret_detector",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Secrets found: 0",
+          "duration_ms": 0,
+          "fallback_used": false
+        }
+      ],
+      "notes": "Mock findings generated for offline execution."
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "e3f30a31-aa76-40f0-8ad2-bfc6207d2526",
+    "run_id": "demo_scenario_c",
+    "seq": 13,
+    "timestamp": "2026-10-19T21:28:31.243842+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: style_checker",
+    "payload": {
+      "tool_name": "style_checker"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "d21ce620-f16c-4605-8b69-ba77da1b3a20",
+    "run_id": "demo_scenario_c",
+    "seq": 14,
+    "timestamp": "2026-10-19T21:28:31.247353+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool style_checker completed in 2ms.",
+    "payload": {
+      "output": {
+        "success": true,
+        "violations_count": 2,
+        "violations": [
+          {
+            "line": 1,
+            "column": 80,
+            "rule": "E501",
+            "message": "E501 line too long (100 > 79 characters)"
+          },
+          {
+            "line": 1,
+            "column": 101,
+            "rule": "W292",
+            "message": "W292 no newline at end of file"
+          }
+        ]
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "style_checker",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'success': True, 'violations_count': 2, 'violations': [{'line': 1, 'column': 80, 'rule': 'E501', 'message': 'E501 line too long (100 > 79 characters)'}, {'line': 1, 'column': 101, 'rule': 'W292', 'me",
+        "duration_ms": 2,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "d63bec05-a3f5-43ed-adae-7854dde69c98",
+    "run_id": "demo_scenario_c",
+    "seq": 15,
+    "timestamp": "2026-10-19T21:28:31.247353+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_call",
+    "summary": "Invoking tool: docstring_checker",
+    "payload": {
+      "tool_name": "docstring_checker"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "b196c510-0ca3-41ef-9c44-10639a57d259",
+    "run_id": "demo_scenario_c",
+    "seq": 16,
+    "timestamp": "2026-10-19T21:28:31.250891+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "tool_result",
+    "summary": "Tool docstring_checker completed in 3ms.",
+    "payload": {
+      "output": {
+        "success": false,
+        "error": "pydocstyle execution failed: 'ParseError' object has no attribute 'line'",
+        "issues_count": 0,
+        "issues": []
+      }
+    },
+    "tool_calls": [
+      {
+        "tool_name": "docstring_checker",
+        "arguments": {},
+        "success": true,
+        "error": null,
+        "output_summary": "{'success': False, 'error': \"pydocstyle execution failed: 'ParseError' object has no attribute 'line'\", 'issues_count': 0, 'issues': []}",
+        "duration_ms": 3,
+        "fallback_used": false
+      }
+    ],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "ebddb9d0-1cfa-4a48-80a5-915434804a5c",
+    "run_id": "demo_scenario_c",
+    "seq": 17,
+    "timestamp": "2026-10-19T21:28:31.250891+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "finding",
+    "summary": "Style & Doc Agent reported 1 findings (confidence: 0.90).",
+    "payload": {
+      "agent": "style_doc_agent",
+      "round": 1,
+      "findings": [
+        {
+          "finding_id": "a02b5c17-721b-48f6-ac2a-55d1176be0d2",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        }
+      ],
+      "overall_confidence": 0.9,
+      "tool_results_summary": [
+        {
+          "tool_name": "style_checker",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Violations: 2",
+          "duration_ms": 2,
+          "fallback_used": false
+        },
+        {
+          "tool_name": "docstring_checker",
+          "arguments": {},
+          "success": true,
+          "error": null,
+          "output_summary": "Docstring issues: 0",
+          "duration_ms": 3,
+          "fallback_used": false
+        }
+      ],
+      "notes": "Mock findings generated for offline execution."
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "9069bdf4-03b3-4403-a398-61c558e30d0d",
+    "run_id": "demo_scenario_c",
+    "seq": 18,
+    "timestamp": "2026-10-19T21:28:31.252654+00:00",
+    "from_agent": "orchestrator",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "plan",
+    "summary": "Conflict detection complete: 0 open conflict(s) found.",
+    "payload": {
+      "open_conflicts": 0,
+      "total_conflicts": 0
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "cac29f19-f510-42fb-80db-d46ca1c4094d",
+    "run_id": "demo_scenario_c",
+    "seq": 19,
+    "timestamp": "2026-10-19T21:28:31.253220+00:00",
+    "from_agent": "orchestrator",
+    "to_agent": "user",
+    "round": 1,
+    "message_type": "final_report",
+    "summary": "Final report synthesized: 3 issues, severity=critical.",
+    "payload": {
+      "run_id": "demo_scenario_c",
+      "status": "completed",
+      "overall_severity": "critical",
+      "executive_summary": "Crucible multi-agent code review completed in 1 round(s). Total findings: 3 (Critical: 3, High: 0, Medium: 0). Overall severity: CRITICAL. Arbitration rulings issued: 0.",
+      "all_issues": [
+        {
+          "finding_id": "356fdeb0-9c95-4e4e-a27f-57902dabb472",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        },
+        {
+          "finding_id": "20c32de9-9763-462b-b4d6-5009e1ea9188",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        },
+        {
+          "finding_id": "a02b5c17-721b-48f6-ac2a-55d1176be0d2",
+          "line_start": 1,
+          "line_end": 5,
+          "function_name": "login",
+          "category": "injection",
+          "severity": "critical",
+          "confidence": 0.95,
+          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
+          "recommendation": "Replace dynamic concatenation with parameterized queries.",
+          "cwe_id": "CWE-89",
+          "pep_rule": null
+        }
+      ],
+      "resolved_conflicts": [],
+      "metrics": {
+        "total_rounds": 1,
+        "total_findings": 3,
+        "critical": 3,
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "info": 0,
+        "conflicts_detected": 0,
+        "conflicts_arbitrated": 0,
+        "trace_events": 18
+      }
+    },
+    "tool_calls": [],
+    "decision_rationale": "Crucible multi-agent code review completed in 1 round(s). Total findings: 3 (Critical: 3, High: 0, Medium: 0). Overall severity: CRITICAL. Arbitration rulings issued: 0.",
+    "replan_trigger": "",
+    "fallback_used": false
+  }
+]

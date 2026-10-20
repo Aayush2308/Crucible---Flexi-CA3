@@ -32,7 +32,13 @@ def export_trace_excerpt(input_path: str, output_path: str, max_chars: int = 120
     with open(p_in, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    events = data.get("events", [])
+    if isinstance(data, list):
+        events = data
+    elif isinstance(data, dict):
+        events = data.get("events", [])
+    else:
+        events = []
+
     raw_json = json.dumps(events, indent=2)
 
     # If within limit, write full

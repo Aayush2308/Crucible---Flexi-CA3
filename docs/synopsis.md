@@ -1,0 +1,12 @@
+# Crucible — Multi-Agent AI Code Review System
+
+## Project Synopsis
+
+### Problem
+Software developers — particularly students, bootcamp graduates, and junior engineers — routinely receive code feedback that is either too narrow (a linter catching only style issues) or too shallow (a single AI model giving a generic critique). A single AI agent tasked with reviewing code faces a fundamental trade-off: it can assess logical correctness, or security vulnerabilities, or documentation quality — but attempting all three simultaneously causes attention to spread so thin that each perspective becomes superficial.
+
+### Solution
+Crucible is a multi-agent AI system where four cooperating agents collaborate, disagree, and critique each other to produce a comprehensive, multi-perspective code review. A Logic Reviewer agent independently analyses algorithmic correctness, potential bugs, and edge cases using Python's AST parser and the radon complexity library. A Security Auditor agent independently scans for vulnerability patterns and unsafe coding practices using the bandit SAST tool and custom secret detection. A Style & Documentation Agent independently evaluates naming conventions, PEP 8 compliance, and docstring completeness using pycodestyle and pydocstyle. An Orchestrator agent — built on LangGraph with the Orchestrator-Worker with Shared Blackboard and Peer-Critique Channel pattern — reads all three agents' findings, detects conflicts (for example, when the Logic Reviewer marks a function as correct while the Security Auditor identifies a critical SQL injection), arbitrates those conflicts with a written rationale, and triggers targeted revision loops. If an external tool becomes unavailable, the affected agent replans using LLM-only reasoning and records the fallback in the execution trace. The system does not execute in a fixed sequence: the Orchestrator's routing decisions are entirely LLM-driven, not hardcoded, meaning the path through the system depends on what the agents actually find.
+
+### Target User
+Crucible is designed for students learning software development, bootcamp graduates preparing for technical interviews, and junior developers who lack access to experienced code reviewers. The system accepts a Python code snippet plus optional context as input and returns a structured, severity-ranked review report with per-agent findings, conflict arbitrations, and a final executive summary — layered feedback that a single AI prompt or linter cannot reliably provide.

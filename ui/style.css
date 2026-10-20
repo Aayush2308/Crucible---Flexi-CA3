@@ -308,3 +308,158 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Phase 4: Card enhancements ────────────────────────────────────────── */
+
+.card-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.08);
+  color: #cdd6f4;
+  margin: 0 6px;
+}
+
+.card-rationale {
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid rgba(253,203,110,0.5);
+  border-radius: 4px;
+  font-size: 11px;
+  color: #a6adc8;
+  line-height: 1.5;
+}
+
+/* ── Status indicator states ───────────────────────────────────────────── */
+
+.status-indicator {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-indicator.online  { background: #55efc4; box-shadow: 0 0 6px #55efc4; animation: pulse 2s infinite; }
+.status-indicator.running { background: #fdcb6e; box-shadow: 0 0 6px #fdcb6e; animation: pulse 0.8s infinite; }
+.status-indicator.offline { background: #ff7675; box-shadow: 0 0 6px #ff7675; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Metrics row in report ─────────────────────────────────────────────── */
+
+.metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+}
+
+.metric {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  color: #cdd6f4;
+}
+
+/* ── Findings list ─────────────────────────────────────────────────────── */
+
+.findings-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.finding-item {
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  animation: fadeIn 0.3s ease;
+}
+
+.finding-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.finding-location {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: #74b9ff;
+  background: rgba(116,185,255,0.1);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.finding-category {
+  color: #a6adc8;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.finding-evidence {
+  color: #cdd6f4;
+  flex: 1 1 100%;
+}
+
+.finding-rec {
+  flex: 1 1 100%;
+  color: #94a3b8;
+  font-size: 11px;
+  padding-left: 4px;
+}
+
+.finding-cwe {
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  color: #e17055;
+  background: rgba(225,112,85,0.1);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Report header / summary */
+.report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.report-header h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #cdd6f4;
+}
+.report-summary {
+  font-size: 12px;
+  color: #a6adc8;
+  line-height: 1.6;
+}
+.report-findings {
+  margin-top: 10px;
+}
+
