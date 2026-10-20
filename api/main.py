@@ -13,6 +13,10 @@ Endpoints:
 
 from __future__ import annotations
 
+# Load .env file automatically (local dev) — no-op if file doesn't exist
+from dotenv import load_dotenv
+load_dotenv()
+
 import asyncio
 from contextlib import asynccontextmanager
 import json
