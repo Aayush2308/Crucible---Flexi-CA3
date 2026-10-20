@@ -138,6 +138,9 @@ def _generate_default_mock(schema_cls: type[T], system_prompt: str, user_prompt:
     raise LLMFailure(f"No mock generator available for schema {schema_cls.__name__}")
 
 
+DEFAULT_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+
+
 def call_llm(
     model_name: str,
     system_prompt: str,
@@ -161,6 +164,11 @@ def call_llm(
 
     genai.configure(api_key=api_key)
 
+    # Resolve active model (support GEMINI_MODEL env var and upgrade deprecated gemini-1.5-flash)
+    active_model = os.getenv("GEMINI_MODEL", "").strip() or model_name or DEFAULT_MODEL_NAME
+    if active_model == "gemini-1.5-flash":
+        active_model = DEFAULT_MODEL_NAME
+
     attempt = 0
     backoff = 2.0
     last_error: Exception | None = None
@@ -169,7 +177,7 @@ def call_llm(
         attempt += 1
         try:
             model = genai.GenerativeModel(
-                model_name=model_name,
+                model_name=active_model,
                 generation_config={
                     "temperature": temperature,
                     "response_mime_type": "application/json",
@@ -214,9 +222,9 @@ def call_llm(
         to_agent="blackboard",
         message_type="error",
         summary=f"LLM inference failed after {max_retries} attempts: {last_error}",
-        payload={"error": str(last_error), "model": model_name},
+        payload={"error": str(last_error), "model": active_model},
     )
 
     raise LLMFailure(
-        f"LLM call to {model_name} failed after {max_retries} attempts. Last error: {last_error}"
+        f"LLM call to {active_model} failed after {max_retries} attempts. Last error: {last_error}"
     )

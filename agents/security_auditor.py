@@ -29,7 +29,7 @@ from tools.tool_base import run_tool
 class SecurityAuditor(BaseAgent):
     """Specialist agent focusing exclusively on vulnerability detection and secret exposure."""
 
-    def __init__(self, agent_name: AgentName = "security_auditor", model_name: str = "gemini-1.5-flash") -> None:
+    def __init__(self, agent_name: AgentName = "security_auditor", model_name: str = "gemini-2.5-flash") -> None:
         super().__init__(agent_name=agent_name, model_name=model_name)
 
     def run(self, state: CrucibleState) -> CrucibleState:

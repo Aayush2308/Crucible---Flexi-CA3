@@ -103,7 +103,7 @@ def triage_node(state: CrucibleState) -> CrucibleState:
 
     try:
         plan, state = call_llm(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-2.5-flash",
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             response_schema=OrchestratorPlan,
@@ -363,7 +363,7 @@ def review_decision_node(state: CrucibleState) -> CrucibleState:
 
     try:
         decision, state = call_llm(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-2.5-flash",
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             response_schema=OrchestratorReviewDecision,
@@ -458,7 +458,7 @@ def arbitration_node(state: CrucibleState) -> CrucibleState:
 
         try:
             ruling, state = call_llm(
-                model_name="gemini-1.5-flash",
+                model_name="gemini-2.5-flash",
                 system_prompt=system_prompt,
                 user_prompt=user_prompt,
                 response_schema=ArbitrationRuling,

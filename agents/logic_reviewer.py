@@ -29,7 +29,7 @@ from tools.tool_base import run_tool
 class LogicReviewer(BaseAgent):
     """Specialist agent focusing exclusively on algorithmic soundness and logic flaws."""
 
-    def __init__(self, agent_name: AgentName = "logic_reviewer", model_name: str = "gemini-1.5-flash") -> None:
+    def __init__(self, agent_name: AgentName = "logic_reviewer", model_name: str = "gemini-2.5-flash") -> None:
         super().__init__(agent_name=agent_name, model_name=model_name)
 
     def run(self, state: CrucibleState) -> CrucibleState:

@@ -29,7 +29,7 @@ from tools.tool_base import run_tool
 class StyleDocAgent(BaseAgent):
     """Specialist agent focusing exclusively on PEP 8 formatting, naming, and docstring coverage."""
 
-    def __init__(self, agent_name: AgentName = "style_doc_agent", model_name: str = "gemini-1.5-flash") -> None:
+    def __init__(self, agent_name: AgentName = "style_doc_agent", model_name: str = "gemini-2.5-flash") -> None:
         super().__init__(agent_name=agent_name, model_name=model_name)
 
     def run(self, state: CrucibleState) -> CrucibleState:
