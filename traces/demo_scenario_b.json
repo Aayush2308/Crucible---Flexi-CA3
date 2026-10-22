@@ -1,9 +1,28 @@
 [
   {
-    "event_id": "4740c772-de9d-41aa-9abf-67e1ce9976af",
+    "event_id": "e48bfdcd-ed02-42d3-9b41-074a4e1c567d",
     "run_id": "demo_scenario_b",
     "seq": 1,
-    "timestamp": "2026-10-19T21:28:30.001719+00:00",
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
+    "from_agent": "orchestrator",
+    "to_agent": "blackboard",
+    "round": 0,
+    "message_type": "error",
+    "summary": "LLM inference failed after 3 attempts: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m39.316932005s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32079\n}\n]",
+    "payload": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m39.316932005s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32079\n}\n]",
+      "model": "gemini-2.5-flash"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "19d2368d-6415-4755-85de-31de498dfb9c",
+    "run_id": "demo_scenario_b",
+    "seq": 2,
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
     "from_agent": "orchestrator",
     "to_agent": "blackboard",
     "round": 1,
@@ -18,19 +37,19 @@
       "execution_order": "parallel",
       "focus_areas": {},
       "budget": 3,
-      "rationale": "Automated triage plan: full multi-agent inspection in parallel.",
+      "rationale": "Fallback plan: LLM triage unavailable; dispatching all agents.",
       "next_action": "dispatch_workers"
     },
     "tool_calls": [],
-    "decision_rationale": "Automated triage plan: full multi-agent inspection in parallel.",
+    "decision_rationale": "Fallback plan: LLM triage unavailable; dispatching all agents.",
     "replan_trigger": "",
     "fallback_used": false
   },
   {
-    "event_id": "f639cf91-de17-4e1e-8c90-3e072a7ca91e",
+    "event_id": "7158a1b1-cb61-4edb-ab00-95eb1e9463e2",
     "run_id": "demo_scenario_b",
-    "seq": 2,
-    "timestamp": "2026-10-19T21:28:30.001719+00:00",
+    "seq": 3,
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
     "from_agent": "orchestrator",
     "to_agent": "blackboard",
     "round": 1,
@@ -49,10 +68,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "b0f64142-50a8-4cd1-af35-63abaea2e132",
+    "event_id": "1b2e1732-c69e-4fe4-8123-38476dabadf3",
     "run_id": "demo_scenario_b",
-    "seq": 3,
-    "timestamp": "2026-10-19T21:28:30.001719+00:00",
+    "seq": 4,
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
     "from_agent": "logic_reviewer",
     "to_agent": "blackboard",
     "round": 1,
@@ -67,10 +86,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "41e5622f-3c3c-4387-87ed-896778f96452",
+    "event_id": "d922992a-43b7-4a18-937e-0680d5e6c2bf",
     "run_id": "demo_scenario_b",
-    "seq": 4,
-    "timestamp": "2026-10-19T21:28:30.003263+00:00",
+    "seq": 5,
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
     "from_agent": "logic_reviewer",
     "to_agent": "blackboard",
     "round": 1,
@@ -112,10 +131,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "6d6ce39e-d462-49be-a63f-ef56fe9d0171",
+    "event_id": "077acb7a-d400-4a24-a593-05fe5ccde20e",
     "run_id": "demo_scenario_b",
-    "seq": 5,
-    "timestamp": "2026-10-19T21:28:30.003263+00:00",
+    "seq": 6,
+    "timestamp": "2026-10-22T22:05:28.315912+00:00",
     "from_agent": "logic_reviewer",
     "to_agent": "blackboard",
     "round": 1,
@@ -130,10 +149,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "fa77fe85-76cd-4bd8-91fa-8c0a7dd9342f",
+    "event_id": "b9410671-bcf2-4604-b431-9ab655690912",
     "run_id": "demo_scenario_b",
-    "seq": 6,
-    "timestamp": "2026-10-19T21:28:30.003263+00:00",
+    "seq": 7,
+    "timestamp": "2026-10-22T22:05:28.316924+00:00",
     "from_agent": "logic_reviewer",
     "to_agent": "blackboard",
     "round": 1,
@@ -168,34 +187,39 @@
     "fallback_used": false
   },
   {
-    "event_id": "523f4a77-c6ee-45fd-80b6-69f9694fa7a5",
+    "event_id": "a1ad1633-3000-49d0-9ce3-630a73bca5bb",
     "run_id": "demo_scenario_b",
-    "seq": 7,
-    "timestamp": "2026-10-19T21:28:30.003263+00:00",
+    "seq": 8,
+    "timestamp": "2026-10-22T22:05:43.480506+00:00",
+    "from_agent": "logic_reviewer",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "error",
+    "summary": "LLM inference failed after 3 attempts: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m24.152992025s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32064\n}\n]",
+    "payload": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m24.152992025s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32064\n}\n]",
+      "model": "gemini-2.5-flash"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "a10cd1e0-162e-483e-8cc6-ed09f4c64a67",
+    "run_id": "demo_scenario_b",
+    "seq": 9,
+    "timestamp": "2026-10-22T22:05:43.480506+00:00",
     "from_agent": "logic_reviewer",
     "to_agent": "blackboard",
     "round": 1,
     "message_type": "finding",
-    "summary": "Logic Reviewer reported 1 findings (confidence: 0.90).",
+    "summary": "Logic Reviewer reported 0 findings (confidence: 0.85).",
     "payload": {
       "agent": "logic_reviewer",
       "round": 1,
-      "findings": [
-        {
-          "finding_id": "b84ea198-4ce8-4930-a851-e3bd2894291d",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
-          "pep_rule": null
-        }
-      ],
-      "overall_confidence": 0.9,
+      "findings": [],
+      "overall_confidence": 0.85,
       "tool_results_summary": [
         {
           "tool_name": "ast_analyzer",
@@ -216,7 +240,7 @@
           "fallback_used": false
         }
       ],
-      "notes": "Mock findings generated for offline execution."
+      "notes": "Fallback findings derived from AST and Radon complexity tools: LLM call to gemini-2.5-flash failed after 3 attempts. Last error: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m24.152992025s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32064\n}\n]"
     },
     "tool_calls": [],
     "decision_rationale": "",
@@ -224,10 +248,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "653ae65e-3f01-4e26-b834-626e719de867",
+    "event_id": "5db7f330-3c57-458d-be3e-99c8ae419877",
     "run_id": "demo_scenario_b",
-    "seq": 8,
-    "timestamp": "2026-10-19T21:28:30.003263+00:00",
+    "seq": 10,
+    "timestamp": "2026-10-22T22:05:43.480506+00:00",
     "from_agent": "security_auditor",
     "to_agent": "blackboard",
     "round": 1,
@@ -242,22 +266,22 @@
     "fallback_used": false
   },
   {
-    "event_id": "075059c8-1d8c-4a93-8b08-2660296a7013",
+    "event_id": "5dd1b16c-d706-493e-83fe-e440e1c7b65f",
     "run_id": "demo_scenario_b",
-    "seq": 9,
-    "timestamp": "2026-10-19T21:28:30.534237+00:00",
+    "seq": 11,
+    "timestamp": "2026-10-22T22:05:43.895930+00:00",
     "from_agent": "security_auditor",
     "to_agent": "blackboard",
     "round": 1,
     "message_type": "tool_result",
-    "summary": "Tool bandit_scanner completed in 530ms.",
+    "summary": "Tool bandit_scanner completed in 415ms.",
     "payload": {
       "output": {
         "success": true,
         "issues_count": 0,
         "issues": [],
         "metrics": {
-          "C:\\Users\\Aayush\\AppData\\Local\\Temp\\tmpufoougjj.py": {
+          "C:\\Users\\Aayush\\AppData\\Local\\Temp\\tmp3rx6okp6.py": {
             "CONFIDENCE.HIGH": 0,
             "CONFIDENCE.LOW": 0,
             "CONFIDENCE.MEDIUM": 0,
@@ -292,8 +316,8 @@
         "arguments": {},
         "success": true,
         "error": null,
-        "output_summary": "{'success': True, 'issues_count': 0, 'issues': [], 'metrics': {'C:\\\\Users\\\\Aayush\\\\AppData\\\\Local\\\\Temp\\\\tmpufoougjj.py': {'CONFIDENCE.HIGH': 0, 'CONFIDENCE.LOW': 0, 'CONFIDENCE.MEDIUM': 0, 'CONFIDENC",
-        "duration_ms": 530,
+        "output_summary": "{'success': True, 'issues_count': 0, 'issues': [], 'metrics': {'C:\\\\Users\\\\Aayush\\\\AppData\\\\Local\\\\Temp\\\\tmp3rx6okp6.py': {'CONFIDENCE.HIGH': 0, 'CONFIDENCE.LOW': 0, 'CONFIDENCE.MEDIUM': 0, 'CONFIDENC",
+        "duration_ms": 415,
         "fallback_used": false
       }
     ],
@@ -302,10 +326,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "0f6247b8-bd63-4c6b-a33c-908923f4e635",
+    "event_id": "da4964e3-41ff-417a-91c4-b02c4c8c1706",
     "run_id": "demo_scenario_b",
-    "seq": 10,
-    "timestamp": "2026-10-19T21:28:30.534237+00:00",
+    "seq": 12,
+    "timestamp": "2026-10-22T22:05:43.895930+00:00",
     "from_agent": "security_auditor",
     "to_agent": "blackboard",
     "round": 1,
@@ -320,10 +344,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "bc731010-47b6-46bf-876a-fda269ebb456",
+    "event_id": "eaef7e7f-1d0a-4ea5-b09b-bf666fd7dcc5",
     "run_id": "demo_scenario_b",
-    "seq": 11,
-    "timestamp": "2026-10-19T21:28:30.535239+00:00",
+    "seq": 13,
+    "timestamp": "2026-10-22T22:05:43.895930+00:00",
     "from_agent": "security_auditor",
     "to_agent": "blackboard",
     "round": 1,
@@ -352,34 +376,39 @@
     "fallback_used": false
   },
   {
-    "event_id": "6d0b1d3f-be03-427e-a875-2e7becf32f26",
+    "event_id": "31773680-1031-43a1-95fc-49f08c333135",
     "run_id": "demo_scenario_b",
-    "seq": 12,
-    "timestamp": "2026-10-19T21:28:30.535239+00:00",
+    "seq": 14,
+    "timestamp": "2026-10-22T22:05:59.017223+00:00",
+    "from_agent": "security_auditor",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "error",
+    "summary": "LLM inference failed after 3 attempts: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m8.61529105s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32048\n}\n]",
+    "payload": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m8.61529105s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32048\n}\n]",
+      "model": "gemini-2.5-flash"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "a1bc2224-e6e7-42b6-b292-e4269ee574c1",
+    "run_id": "demo_scenario_b",
+    "seq": 15,
+    "timestamp": "2026-10-22T22:05:59.017223+00:00",
     "from_agent": "security_auditor",
     "to_agent": "blackboard",
     "round": 1,
     "message_type": "finding",
-    "summary": "Security Auditor reported 1 findings (confidence: 0.90).",
+    "summary": "Security Auditor reported 0 findings (confidence: 0.85).",
     "payload": {
       "agent": "security_auditor",
       "round": 1,
-      "findings": [
-        {
-          "finding_id": "1d4a1b80-a144-4f33-b977-0f21ed9d3bd7",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
-          "pep_rule": null
-        }
-      ],
-      "overall_confidence": 0.9,
+      "findings": [],
+      "overall_confidence": 0.85,
       "tool_results_summary": [
         {
           "tool_name": "bandit_scanner",
@@ -387,7 +416,7 @@
           "success": true,
           "error": null,
           "output_summary": "Issues: 0",
-          "duration_ms": 530,
+          "duration_ms": 415,
           "fallback_used": false
         },
         {
@@ -400,7 +429,7 @@
           "fallback_used": false
         }
       ],
-      "notes": "Mock findings generated for offline execution."
+      "notes": "Fallback findings derived directly from Bandit SAST output: LLM call to gemini-2.5-flash failed after 3 attempts. Last error: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h54m8.61529105s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32048\n}\n]"
     },
     "tool_calls": [],
     "decision_rationale": "",
@@ -408,10 +437,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "357f3785-2816-4021-85ca-672840ad1886",
+    "event_id": "90565fd5-ebfe-4a09-9aef-2f33870cd101",
     "run_id": "demo_scenario_b",
-    "seq": 13,
-    "timestamp": "2026-10-19T21:28:30.535239+00:00",
+    "seq": 16,
+    "timestamp": "2026-10-22T22:05:59.017223+00:00",
     "from_agent": "style_doc_agent",
     "to_agent": "blackboard",
     "round": 1,
@@ -426,10 +455,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "03fa5db7-07c8-4a33-b39c-f9b59f1eb8cf",
+    "event_id": "c8849748-bf5d-4a91-82eb-a59a16c6e536",
     "run_id": "demo_scenario_b",
-    "seq": 14,
-    "timestamp": "2026-10-19T21:28:30.539274+00:00",
+    "seq": 17,
+    "timestamp": "2026-10-22T22:05:59.020229+00:00",
     "from_agent": "style_doc_agent",
     "to_agent": "blackboard",
     "round": 1,
@@ -465,10 +494,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "a91ed04c-6491-41e4-9bad-e070d3f130bf",
+    "event_id": "6021ae19-0179-4507-86fa-97fbb20a810b",
     "run_id": "demo_scenario_b",
-    "seq": 15,
-    "timestamp": "2026-10-19T21:28:30.539274+00:00",
+    "seq": 18,
+    "timestamp": "2026-10-22T22:05:59.020229+00:00",
     "from_agent": "style_doc_agent",
     "to_agent": "blackboard",
     "round": 1,
@@ -483,15 +512,15 @@
     "fallback_used": false
   },
   {
-    "event_id": "46d4c6dd-507f-4e48-b038-ee65cab5a469",
+    "event_id": "70800d2b-c1a2-44bf-bcb8-07f15dcfbfac",
     "run_id": "demo_scenario_b",
-    "seq": 16,
-    "timestamp": "2026-10-19T21:28:30.543060+00:00",
+    "seq": 19,
+    "timestamp": "2026-10-22T22:05:59.023271+00:00",
     "from_agent": "style_doc_agent",
     "to_agent": "blackboard",
     "round": 1,
     "message_type": "tool_result",
-    "summary": "Tool docstring_checker completed in 4ms.",
+    "summary": "Tool docstring_checker completed in 2ms.",
     "payload": {
       "output": {
         "success": true,
@@ -506,7 +535,7 @@
         "success": true,
         "error": null,
         "output_summary": "{'success': True, 'issues_count': 0, 'issues': []}",
-        "duration_ms": 4,
+        "duration_ms": 2,
         "fallback_used": false
       }
     ],
@@ -515,34 +544,53 @@
     "fallback_used": false
   },
   {
-    "event_id": "c8b7cf12-499f-4617-98cc-48452dade8a2",
+    "event_id": "d3bfbc09-d946-4b07-b89c-2b41de5b5c1d",
     "run_id": "demo_scenario_b",
-    "seq": 17,
-    "timestamp": "2026-10-19T21:28:30.544064+00:00",
+    "seq": 20,
+    "timestamp": "2026-10-22T22:06:14.123170+00:00",
+    "from_agent": "style_doc_agent",
+    "to_agent": "blackboard",
+    "round": 1,
+    "message_type": "error",
+    "summary": "LLM inference failed after 3 attempts: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h53m53.507459002s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32033\n}\n]",
+    "payload": {
+      "error": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h53m53.507459002s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32033\n}\n]",
+      "model": "gemini-2.5-flash"
+    },
+    "tool_calls": [],
+    "decision_rationale": "",
+    "replan_trigger": "",
+    "fallback_used": false
+  },
+  {
+    "event_id": "83ff7144-4957-45af-b7ac-d50c52c5598b",
+    "run_id": "demo_scenario_b",
+    "seq": 21,
+    "timestamp": "2026-10-22T22:06:14.123170+00:00",
     "from_agent": "style_doc_agent",
     "to_agent": "blackboard",
     "round": 1,
     "message_type": "finding",
-    "summary": "Style & Doc Agent reported 1 findings (confidence: 0.90).",
+    "summary": "Style & Doc Agent reported 1 findings (confidence: 0.85).",
     "payload": {
       "agent": "style_doc_agent",
       "round": 1,
       "findings": [
         {
-          "finding_id": "dd2bbb9e-d3d4-422e-8e8f-bb8b9aa722cb",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
+          "finding_id": "8a8cc6f4-42d8-4b78-a24a-2b56ee047762",
+          "line_start": 3,
+          "line_end": 3,
+          "function_name": null,
+          "category": "pep8_formatting",
+          "severity": "low",
+          "confidence": 0.85,
+          "evidence": "E302 expected 2 blank lines, found 1",
+          "recommendation": "Format code according to PEP 8 guidelines.",
+          "cwe_id": null,
           "pep_rule": null
         }
       ],
-      "overall_confidence": 0.9,
+      "overall_confidence": 0.85,
       "tool_results_summary": [
         {
           "tool_name": "style_checker",
@@ -559,11 +607,11 @@
           "success": true,
           "error": null,
           "output_summary": "Docstring issues: 0",
-          "duration_ms": 4,
+          "duration_ms": 2,
           "fallback_used": false
         }
       ],
-      "notes": "Mock findings generated for offline execution."
+      "notes": "Fallback findings derived from pycodestyle and pydocstyle tools: LLM call to gemini-2.5-flash failed after 3 attempts. Last error: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 8h53m53.507459002s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 32033\n}\n]"
     },
     "tool_calls": [],
     "decision_rationale": "",
@@ -571,10 +619,10 @@
     "fallback_used": false
   },
   {
-    "event_id": "2ad357bb-e2d3-4117-b8fc-7218f07ec1da",
+    "event_id": "afe6e8f8-1f70-430b-bb19-586f75cd4b05",
     "run_id": "demo_scenario_b",
-    "seq": 18,
-    "timestamp": "2026-10-19T21:28:30.545061+00:00",
+    "seq": 22,
+    "timestamp": "2026-10-22T22:06:14.124232+00:00",
     "from_agent": "orchestrator",
     "to_agent": "blackboard",
     "round": 1,
@@ -590,77 +638,51 @@
     "fallback_used": false
   },
   {
-    "event_id": "3a4b0162-e793-4bc8-ab41-1b5c45520773",
+    "event_id": "11abf5ed-93ad-42d9-a616-8fb3d5787726",
     "run_id": "demo_scenario_b",
-    "seq": 19,
-    "timestamp": "2026-10-19T21:28:30.545061+00:00",
+    "seq": 23,
+    "timestamp": "2026-10-22T22:06:14.124232+00:00",
     "from_agent": "orchestrator",
     "to_agent": "user",
     "round": 1,
     "message_type": "final_report",
-    "summary": "Final report synthesized: 3 issues, severity=critical.",
+    "summary": "Final report synthesized: 1 issues, severity=low.",
     "payload": {
       "run_id": "demo_scenario_b",
       "status": "completed",
-      "overall_severity": "critical",
-      "executive_summary": "Crucible multi-agent code review completed in 1 round(s). Total findings: 3 (Critical: 3, High: 0, Medium: 0). Overall severity: CRITICAL. Arbitration rulings issued: 0.",
+      "overall_severity": "low",
+      "executive_summary": "Crucible multi-agent code review completed in 1 round(s). Total findings: 1 (Critical: 0, High: 0, Medium: 0). Overall severity: LOW. Arbitration rulings issued: 0.",
       "all_issues": [
         {
-          "finding_id": "b84ea198-4ce8-4930-a851-e3bd2894291d",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
-          "pep_rule": null
-        },
-        {
-          "finding_id": "1d4a1b80-a144-4f33-b977-0f21ed9d3bd7",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
-          "pep_rule": null
-        },
-        {
-          "finding_id": "dd2bbb9e-d3d4-422e-8e8f-bb8b9aa722cb",
-          "line_start": 1,
-          "line_end": 5,
-          "function_name": "login",
-          "category": "injection",
-          "severity": "critical",
-          "confidence": 0.95,
-          "evidence": "Unsanitized dynamic parameter formatting detected in query string.",
-          "recommendation": "Replace dynamic concatenation with parameterized queries.",
-          "cwe_id": "CWE-89",
+          "finding_id": "8a8cc6f4-42d8-4b78-a24a-2b56ee047762",
+          "line_start": 3,
+          "line_end": 3,
+          "function_name": null,
+          "category": "pep8_formatting",
+          "severity": "low",
+          "confidence": 0.85,
+          "evidence": "E302 expected 2 blank lines, found 1",
+          "recommendation": "Format code according to PEP 8 guidelines.",
+          "cwe_id": null,
           "pep_rule": null
         }
       ],
       "resolved_conflicts": [],
       "metrics": {
         "total_rounds": 1,
-        "total_findings": 3,
-        "critical": 3,
+        "total_findings": 1,
+        "critical": 0,
         "high": 0,
         "medium": 0,
-        "low": 0,
+        "low": 1,
         "info": 0,
         "conflicts_detected": 0,
         "conflicts_arbitrated": 0,
-        "trace_events": 18
+        "trace_events": 22
       }
     },
     "tool_calls": [],
-    "decision_rationale": "Crucible multi-agent code review completed in 1 round(s). Total findings: 3 (Critical: 3, High: 0, Medium: 0). Overall severity: CRITICAL. Arbitration rulings issued: 0.",
+    "decision_rationale": "Crucible multi-agent code review completed in 1 round(s). Total findings: 1 (Critical: 0, High: 0, Medium: 0). Overall severity: LOW. Arbitration rulings issued: 0.",
     "replan_trigger": "",
     "fallback_used": false
   }
