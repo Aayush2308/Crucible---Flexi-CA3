@@ -12,7 +12,7 @@ from typing import Any
 
 from agents.base import BaseAgent
 from lib.blackboard import CrucibleState
-from lib.llm_provider import call_llm
+from lib.llm_provider import LLMFailure, call_llm
 from lib.schemas import (
     AgentName,
     CritiqueRequest,
@@ -101,14 +101,51 @@ class StyleDocAgent(BaseAgent):
             f"Source Code:\n{code}"
         )
 
-        finding_set, state = call_llm(
-            model_name=self.model_name,
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            response_schema=FindingSet,
-            state=state,
-            event_from=self.agent_name,
-        )
+        try:
+            finding_set, state = call_llm(
+                model_name=self.model_name,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                response_schema=FindingSet,
+                state=state,
+                event_from=self.agent_name,
+            )
+        except LLMFailure as llm_err:
+            fallback_findings = []
+            if doc_result.success and doc_result.output:
+                for missing in doc_result.output.get("missing_docstrings", []):
+                    fallback_findings.append(Finding(
+                        line_start=missing.get("line", 1),
+                        line_end=missing.get("line", 1),
+                        function_name=missing.get("name"),
+                        category="missing_docstring",
+                        severity="low",
+                        confidence=0.9,
+                        evidence=f"Object '{missing.get('name')}' is missing a docstring (PEP 257).",
+                        recommendation="Add descriptive docstring detailing parameters and return types.",
+                        pep_rule="D103",
+                    ))
+            if style_result.success and style_result.output:
+                for viol in style_result.output.get("violations", []):
+                    fallback_findings.append(Finding(
+                        line_start=viol.get("line", 1),
+                        line_end=viol.get("line", 1),
+                        function_name=None,
+                        category="pep8_formatting",
+                        severity="low",
+                        confidence=0.85,
+                        evidence=viol.get("message", "PEP 8 style violation"),
+                        recommendation="Format code according to PEP 8 guidelines.",
+                        pep_rule=viol.get("code"),
+                    ))
+            finding_set = FindingSet(
+                agent=self.agent_name,
+                round=state.get("current_round", 0),
+                findings=fallback_findings,
+                overall_confidence=0.85,
+                tool_results_summary=tool_logs,
+                notes=f"Fallback findings derived from pycodestyle and pydocstyle tools: {llm_err}",
+            )
 
         # Ensure agent metadata and tool logs are preserved
         finding_set.agent = self.agent_name

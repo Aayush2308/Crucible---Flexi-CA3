@@ -12,7 +12,7 @@ from typing import Any
 
 from agents.base import BaseAgent
 from lib.blackboard import CrucibleState
-from lib.llm_provider import call_llm
+from lib.llm_provider import LLMFailure, call_llm
 from lib.schemas import (
     AgentName,
     CritiqueRequest,
@@ -101,14 +101,49 @@ class LogicReviewer(BaseAgent):
             f"Source Code:\n{code}"
         )
 
-        finding_set, state = call_llm(
-            model_name=self.model_name,
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            response_schema=FindingSet,
-            state=state,
-            event_from=self.agent_name,
-        )
+        try:
+            finding_set, state = call_llm(
+                model_name=self.model_name,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                response_schema=FindingSet,
+                state=state,
+                event_from=self.agent_name,
+            )
+        except LLMFailure as llm_err:
+            fallback_findings = []
+            if cc_result.success and cc_result.output:
+                for func_name, cc_val in cc_result.output.get("functions", {}).items():
+                    if cc_val > 5:
+                        fallback_findings.append(Finding(
+                            line_start=1,
+                            line_end=1,
+                            function_name=func_name,
+                            category="complexity",
+                            severity="medium" if cc_val <= 10 else "high",
+                            confidence=0.9,
+                            evidence=f"Function '{func_name}' has cyclomatic complexity of {cc_val} (threshold: 5).",
+                            recommendation="Refactor logic into smaller helper functions to reduce complexity.",
+                        ))
+            if not ast_result.success:
+                fallback_findings.append(Finding(
+                    line_start=1,
+                    line_end=1,
+                    function_name=None,
+                    category="syntax_error",
+                    severity="high",
+                    confidence=1.0,
+                    evidence=f"AST parsing failed: {ast_result.error}",
+                    recommendation="Ensure code conforms to valid Python syntax.",
+                ))
+            finding_set = FindingSet(
+                agent=self.agent_name,
+                round=state.get("current_round", 0),
+                findings=fallback_findings,
+                overall_confidence=0.85,
+                tool_results_summary=tool_logs,
+                notes=f"Fallback findings derived from AST and Radon complexity tools: {llm_err}",
+            )
 
         # Ensure agent metadata and tool logs are preserved
         finding_set.agent = self.agent_name
