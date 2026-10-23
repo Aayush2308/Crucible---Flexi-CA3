@@ -13,24 +13,27 @@ Endpoints:
 
 from __future__ import annotations
 
-# Load .env file automatically (local dev) — no-op if file doesn't exist
 from dotenv import load_dotenv
+
 load_dotenv()
 
 import asyncio
-from contextlib import asynccontextmanager
 import json
 import os
 import time
 import uuid
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import AsyncGenerator
 
-from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import (
+    FileResponse,
+    HTMLResponse,
+    JSONResponse,
+    StreamingResponse,
+)
 
 from agents.orchestrator import Orchestrator
 from lib.blackboard import make_initial_state
@@ -54,7 +57,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     mock = os.getenv("CRUCIBLE_MOCK_LLM", "0") in ("1", "true", "True")
     print(f"[Crucible] Server starting — mock_mode={mock}")
     print(f"[Crucible] UI served from: {UI_DIR}")
-    print(f"[Crucible] Docs available at: /docs")
+    print("[Crucible] Docs available at: /docs")
     yield
     print("[Crucible] Server shutting down.")
 
@@ -211,106 +214,6 @@ async def run_review(payload: ReviewRequest) -> JSONResponse:
             "final_report": report_payload,
         }
     )
-
-
-# ---------------------------------------------------------------------------
-# POST /autofix — Generate automated code refactoring & vulnerability patch
-# ---------------------------------------------------------------------------
-
-class AutoFixRequest(BaseModel):
-    code: str
-    language: str = "python"
-    context: str = ""
-
-@app.post("/autofix", tags=["Review"])
-async def autofix_code(payload: AutoFixRequest) -> JSONResponse:
-    """Generate an automated refactored fix addressing all detected vulnerabilities and style issues."""
-    code = payload.code.strip()
-    if not code:
-        raise HTTPException(status_code=400, detail="No source code provided for autofix.")
-
-    # High-quality smart deterministic refactoring for standard scenarios or fallback
-    if "def login(" in code and "SELECT" in code:
-        fixed_code = '''"""Secure and PEP 8 compliant authentication and billing service."""
-
-from typing import Any, Dict, List
-
-
-def login(username: str, password: str) -> Dict[str, Any]:
-    """Authenticate a user using parameterized SQL queries.
-
-    Args:
-        username: Target account identifier.
-        password: User authentication secret.
-
-    Returns:
-        Dict containing access token and success status.
-    """
-    query = "SELECT * FROM users WHERE username = ? AND password = ?"
-    result = db.execute(query, (username, password))
-    user = result.fetchone()
-    if user:
-        return {"token": generate_token(user.id), "status": "success"}
-    return {"status": "failure"}
-
-
-def calculate_discount(items: List[Any], customer_type: str) -> float:
-    """Calculate total discounted price based on customer tier.
-
-    Args:
-        items: Collection of purchased items with nested details.
-        customer_type: Customer classification ('premium' or 'regular').
-
-    Returns:
-        Calculated total discount price.
-    """
-    total = 0.0
-    if customer_type == "premium":
-        for item in items:
-            for sub in getattr(item, "sub_items", []):
-                for detail in getattr(sub, "details", []):
-                    total += getattr(detail, "price", 0.0) * 0.8
-    elif customer_type == "regular":
-        for item in items:
-            total += getattr(item, "price", 0.0) * 0.9
-    return total
-'''
-        return JSONResponse(content={
-            "fixed_code": fixed_code,
-            "explanation": "Applied parameterized SQL queries (CWE-89 mitigation), added PEP 257 docstrings, PEP 484 type hints, and safe attribute checks."
-        })
-
-    # For general code, try live Gemini refactoring
-    api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    if api_key and api_key != "your_gemini_api_key_here":
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-3.5-flash-lite")
-            prompt = (
-                f"You are an expert software engineer and security auditor.\n"
-                f"Refactor the following {payload.language} code to eliminate all security vulnerabilities (e.g. SQL injection), "
-                f"handle edge cases, add proper docstrings and type hints, and strictly adhere to PEP 8 standards.\n"
-                f"Output ONLY the raw refactored code without markdown code blocks or conversational text.\n\n"
-                f"Original Code:\n{code}"
-            )
-            res = model.generate_content(prompt)
-            clean_text = res.text.strip()
-            if clean_text.startswith("```"):
-                clean_text = re.sub(r"^```(?:python)?\s*", "", clean_text)
-                clean_text = re.sub(r"\s*```$", "", clean_text)
-            return JSONResponse(content={
-                "fixed_code": clean_text,
-                "explanation": "Refactored autonomously by Crucible using Gemini 3.5 Flash."
-            })
-        except Exception:
-            pass
-
-    return JSONResponse(content={
-        "fixed_code": code,
-        "explanation": "Code review complete. No automatic patch could be generated for this snippet."
-    })
-
 
 
 # ---------------------------------------------------------------------------
