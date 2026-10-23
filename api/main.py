@@ -54,7 +54,7 @@ from lib.trace_logger import flush_trace
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Manage application startup and shutdown lifecycle."""
-    mock = os.getenv("CRUCIBLE_MOCK_LLM", "0") in ("1", "true", "True")
+    mock = (os.getenv("CRUCIBLE_MOCK_LLM") or os.getenv("MOCK_LLM", "0")).lower() in ("1", "true")
     print(f"[Crucible] Server starting — mock_mode={mock}")
     print(f"[Crucible] UI served from: {UI_DIR}")
     print("[Crucible] Docs available at: /docs")
@@ -127,7 +127,7 @@ async def health_check() -> JSONResponse:
             "status": "healthy",
             "service": "crucible",
             "version": "1.0.0",
-            "mock_mode": os.getenv("CRUCIBLE_MOCK_LLM", "0") in ("1", "true", "True"),
+            "mock_mode": (os.getenv("CRUCIBLE_MOCK_LLM") or os.getenv("MOCK_LLM", "0")).lower() in ("1", "true"),
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
     )
@@ -341,7 +341,7 @@ async def autofix_endpoint(payload: AutoFixRequest) -> JSONResponse:
     context = payload.context or "General code refactoring"
 
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    force_mock = os.getenv("CRUCIBLE_MOCK_LLM", "0") in ("1", "true", "True")
+    force_mock = (os.getenv("CRUCIBLE_MOCK_LLM") or os.getenv("MOCK_LLM", "0")).lower() in ("1", "true")
 
     # If Gemini is configured and mock mode is off, attempt live AI patch generation
     if api_key and api_key != "your_gemini_api_key_here" and not force_mock:

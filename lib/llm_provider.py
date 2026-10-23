@@ -324,7 +324,7 @@ def call_llm(
 ) -> tuple[T, CrucibleState]:
     """Execute structured LLM inference using Gemini, with multi-model quota recovery, mock fallback, and trace logging."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    force_mock = os.getenv("CRUCIBLE_MOCK_LLM", "0") in ("1", "true", "True")
+    force_mock = (os.getenv("CRUCIBLE_MOCK_LLM") or os.getenv("MOCK_LLM", "0")).lower() in ("1", "true")
 
     # If mock mode active or no API key configured, use deterministic generator
     if force_mock or not api_key or api_key == "your_gemini_api_key_here":
