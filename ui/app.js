@@ -4,6 +4,31 @@
 
 let currentScenario = 'A';
 
+// Agent colour coding for timeline cards
+const AGENT_COLORS = {
+  orchestrator:     '#6c5ce7',
+  logic_reviewer:   '#00b894',
+  security_auditor: '#e17055',
+  style_doc_agent:  '#74b9ff',
+  system:           '#636e72',
+};
+
+const MSG_LABELS = {
+  plan:              '📋 Plan',
+  tool_call:         '🔧 Tool Call',
+  tool_result:       '✅ Tool Result',
+  finding:           '🔍 Finding',
+  fallback:          '⚠️ Fallback',
+  review:            '🔄 Review',
+  critique_request:  '🗣️ Critique Request',
+  critique_response: '💬 Critique Response',
+  arbitration:       '⚖️ Arbitration',
+  final_report:      '📊 Final Report',
+  termination_guard: '🛑 Termination Guard',
+  error:             '❌ Error',
+  stream_done:       '✔️ Stream Done',
+};
+
 const SCENARIOS = {
   python: {
     A: `def login(username, password):
