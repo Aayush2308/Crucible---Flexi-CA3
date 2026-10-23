@@ -2,8 +2,11 @@
 // Author: Arya Shah (Arya-A-Shah)
 // Updated for Phase 4: Full API integration with SSE live streaming
 
+let currentScenario = 'A';
+
 const SCENARIOS = {
-  A: `def login(username, password):
+  python: {
+    A: `def login(username, password):
     query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
     result = db.execute(query)
     user = result.fetchone()
@@ -22,7 +25,7 @@ def calculate_discount(items, customer_type):
             total += item.price * 0.9
     return total`,
 
-  B: `"""Math utility module for positive arithmetic."""
+    B: `"""Math utility module for positive arithmetic."""
 
 def add_positive_numbers(a: int, b: int) -> int:
     """Calculate the sum of two positive integers."""
@@ -30,9 +33,9 @@ def add_positive_numbers(a: int, b: int) -> int:
         raise ValueError("Both numbers must be non-negative.")
     return a + b`,
 
-  C: `This is plain descriptive prose, not Python source code, submitted to test edge-case input handling.`,
+    C: `This is plain descriptive prose, not Python source code, submitted to test edge-case input handling.`,
 
-  D: `import sqlite3
+    D: `import sqlite3
 
 def run_query(user_id):
     # Simulated Bandit failure will trigger autonomous LLM fallback
@@ -40,35 +43,159 @@ def run_query(user_id):
     cur = conn.cursor()
     cur.execute("SELECT * FROM profiles WHERE id = " + str(user_id))
     return cur.fetchall()`
+  },
+
+  javascript: {
+    A: `// Authentication service & discount calculation
+async function login(username, password) {
+  // Vulnerable to SQL Injection (CWE-89) via dynamic string interpolation
+  const query = \`SELECT * FROM users WHERE username = '\${username}' AND password = '\${password}'\`;
+  const [rows] = await db.query(query);
+  if (rows && rows.length > 0) {
+    return { token: generateToken(rows[0].id), status: "success" };
+  }
+  return { status: "failure" };
+}
+
+function calculateDiscount(items, customerType) {
+  // High cyclomatic complexity with deeply nested loops and branches
+  let total = 0;
+  for (const item of items) {
+    if (customerType === "premium") {
+      for (const sub of item.subItems) {
+        for (const detail of sub.details) {
+          total += detail.price * 0.8;
+        }
+      }
+    } else if (customerType === "regular") {
+      total += item.price * 0.9;
+    }
+  }
+  return total;
+}`,
+
+    B: `/**
+ * Math utility module for positive arithmetic.
+ */
+
+/**
+ * Calculate the sum of two positive integers.
+ * @param {number} a 
+ * @param {number} b 
+ * @returns {number}
+ */
+function addPositiveNumbers(a, b) {
+  if (a < 0 || b < 0) {
+    throw new RangeError("Both numbers must be non-negative.");
+  }
+  return a + b;
+}`,
+
+    C: `This is plain descriptive prose, not JavaScript source code, submitted to test edge-case input handling.`,
+
+    D: `const sqlite3 = require('sqlite3').verbose();
+
+function runQuery(userId) {
+  // Direct string concatenation in SQL query (CWE-89)
+  const db = new sqlite3.Database('app.db');
+  const sql = "SELECT * FROM profiles WHERE id = " + userId;
+  return new Promise((resolve, reject) => {
+    db.all(sql, [], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}`
+  },
+
+  go: {
+    A: `package auth
+
+import (
+	"database/sql"
+	"fmt"
+)
+
+type Item struct {
+	Price    float64
+	SubItems []SubItem
+}
+
+type SubItem struct {
+	Details []Detail
+}
+
+type Detail struct {
+	Price float64
+}
+
+// Login handles user authentication - vulnerable to SQL Injection (CWE-89)
+func Login(db *sql.DB, username, password string) (string, error) {
+	query := fmt.Sprintf("SELECT id FROM users WHERE username = '%s' AND password = '%s'", username, password)
+	row := db.QueryRow(query)
+	var id string
+	if err := row.Scan(&id); err != nil {
+		return "", err
+	}
+	return "token_" + id, nil
+}
+
+// CalculateDiscount calculates order discount with high cyclomatic complexity
+func CalculateDiscount(items []Item, customerType string) float64 {
+	total := 0.0
+	for _, item := range items {
+		if customerType == "premium" {
+			for _, sub := range item.SubItems {
+				for _, detail := range sub.Details {
+					total += detail.Price * 0.8
+				}
+			}
+		} else if customerType == "regular" {
+			total += item.Price * 0.9
+		}
+	}
+	return total
+}`,
+
+    B: `package mathutil
+
+import "errors"
+
+// AddPositiveNumbers calculates the sum of two positive integers.
+func AddPositiveNumbers(a, b int) (int, error) {
+	if a < 0 || b < 0 {
+		return 0, errors.New("both numbers must be non-negative")
+	}
+	return a + b, nil
+}`,
+
+    C: `This is plain descriptive prose, not Go source code, submitted to test edge-case input handling.`,
+
+    D: `package dbutil
+
+import (
+	"database/sql"
+)
+
+// RunQuery executes query using direct string concatenation (CWE-89)
+func RunQuery(db *sql.DB, userID string) (*sql.Rows, error) {
+	query := "SELECT * FROM profiles WHERE id = " + userID
+	return db.Query(query)
+}`
+  }
 };
 
-// Agent colour coding for timeline cards
-const AGENT_COLORS = {
-  orchestrator:     '#6c5ce7',
-  logic_reviewer:   '#00b894',
-  security_auditor: '#e17055',
-  style_doc_agent:  '#74b9ff',
-  system:           '#636e72',
-};
-
-const MSG_LABELS = {
-  plan:              '📋 Plan',
-  tool_call:         '🔧 Tool Call',
-  tool_result:       '✅ Tool Result',
-  finding:           '🔍 Finding',
-  fallback:          '⚠️ Fallback',
-  review:            '🔄 Review',
-  critique_request:  '🗣️ Critique Request',
-  critique_response: '💬 Critique Response',
-  arbitration:       '⚖️ Arbitration',
-  final_report:      '📊 Final Report',
-  termination_guard: '🛑 Termination Guard',
-  error:             '❌ Error',
-  stream_done:       '✔️ Stream Done',
-};
+function handleLanguageChange(lang) {
+  const langScenarios = SCENARIOS[lang] || SCENARIOS.python;
+  const code = langScenarios[currentScenario] || '';
+  document.getElementById('code-input').value = code;
+}
 
 function loadScenario(type) {
-  const code = SCENARIOS[type] || '';
+  currentScenario = type;
+  const lang = document.getElementById('input-language').value || 'python';
+  const langScenarios = SCENARIOS[lang] || SCENARIOS.python;
+  const code = langScenarios[type] || '';
   document.getElementById('code-input').value = code;
   document.getElementById('fault-toggle').value =
     type === 'D' ? 'bandit_scanner' : '';
@@ -269,6 +396,13 @@ function setStatus(state, text) {
 // On load: check /health and update indicator
 // ---------------------------------------------------------------------------
 window.addEventListener('DOMContentLoaded', async () => {
+  const langSelect = document.getElementById('input-language');
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      handleLanguageChange(e.target.value);
+    });
+  }
+
   try {
     const res = await fetch('/health');
     if (res.ok) {

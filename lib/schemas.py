@@ -252,3 +252,17 @@ class ReviewResponse(BaseModel):
     run_id: str
     status: str
     final_report: FinalReport | None = None
+
+
+class AutoFixRequest(BaseModel):
+    """Input payload submitted to POST /autofix."""
+    code: str
+    language: str = "python"
+    context: str = ""
+
+
+class AutoFixResponse(BaseModel):
+    """API response envelope returned after automated refactor."""
+    fixed_code: str
+    explanation: str
+

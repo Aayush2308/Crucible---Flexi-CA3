@@ -1,3 +1,4 @@
+
 """Crucible Style and Documentation Agent.
 
 Author: Arya Shah (Arya-A-Shah)
@@ -85,8 +86,8 @@ class StyleDocAgent(BaseAgent):
         # 3. LLM Reasoning
         system_prompt = (
             "You are the Style & Documentation Agent for Crucible, an autonomous multi-agent code evaluation system.\n"
-            "Your ONLY responsibility is to analyze code formatting, PEP 8 compliance, variable naming conventions,\n"
-            "and PEP 257 docstring completeness.\n"
+            "Your ONLY responsibility is to analyze code formatting, language idiomatic standards (PEP 8 for Python, ESLint/camelCase for JavaScript, gofmt/Effective Go for Go),\n"
+            "naming conventions, and documentation completeness (PEP 257 docstrings for Python, JSDoc for JavaScript, Go doc comments for Go).\n"
             "Do NOT report security vulnerabilities or pure algorithmic bugs.\n"
             "Output strictly valid JSON conforming to the FindingSet schema."
         )

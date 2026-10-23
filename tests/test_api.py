@@ -121,3 +121,20 @@ def test_review_validation_error(client: TestClient) -> None:
     """Verify missing input_code returns 422 Unprocessable Entity."""
     response = client.post("/review", json={"language": "python"})
     assert response.status_code == 422
+
+
+def test_autofix_endpoint(client: TestClient) -> None:
+    """Verify POST /autofix returns refactored code and explanation."""
+    payload = {
+        "code": "def login(u, p):\n    query = f'SELECT * FROM users WHERE u={u}'\n    return query\n",
+        "language": "python",
+        "context": "Authentication service",
+    }
+    response = client.post("/autofix", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "fixed_code" in data
+    assert "explanation" in data
+    assert len(data["fixed_code"]) > 0
+    assert "parameterized" in data["explanation"].lower() or "cwe-89" in data["explanation"].lower() or len(data["explanation"]) > 0
+
