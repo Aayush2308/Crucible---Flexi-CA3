@@ -89,6 +89,8 @@ async function submitReview() {
   const timeline = document.getElementById('timeline');
   timeline.innerHTML = '';
   document.getElementById('report-panel').classList.add('hidden');
+  const autofixPanel = document.getElementById('autofix-panel');
+  if (autofixPanel) autofixPanel.classList.add('hidden');
 
   const submitBtn = document.getElementById('btn-submit');
   submitBtn.disabled = true;
@@ -277,3 +279,68 @@ window.addEventListener('DOMContentLoaded', async () => {
     setStatus('offline', 'Server Unreachable');
   }
 });
+
+// ---------------------------------------------------------------------------
+// Auto-Fix & Refactor functionality
+// ---------------------------------------------------------------------------
+let currentFixedCode = '';
+
+async function generateAutoFix() {
+  const code = document.getElementById('code-input').value.trim();
+  const language = document.getElementById('input-language').value;
+  const context = document.getElementById('input-context').value.trim();
+  const btn = document.getElementById('btn-autofix');
+  const panel = document.getElementById('autofix-panel');
+  const explanationEl = document.getElementById('autofix-explanation');
+  const codeContentEl = document.getElementById('autofix-code-content');
+
+  if (!code) {
+    alert('Please enter or select source code first.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Generating Patch...';
+
+  try {
+    const response = await fetch('/autofix', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language, context })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    currentFixedCode = data.fixed_code || code;
+
+    explanationEl.textContent = data.explanation || 'Refactored code addressing identified vulnerabilities.';
+    codeContentEl.textContent = currentFixedCode;
+    panel.classList.remove('hidden');
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+  } catch (err) {
+    alert('Failed to generate auto-fix: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ Auto-Fix & Refactor';
+  }
+}
+
+function applyFixedCode() {
+  if (!currentFixedCode) return;
+  document.getElementById('code-input').value = currentFixedCode;
+  alert('Refactored code applied to editor! You can now click "Execute Multi-Agent Review" to verify that all findings are resolved.');
+}
+
+function copyFixedCode() {
+  if (!currentFixedCode) return;
+  navigator.clipboard.writeText(currentFixedCode).then(() => {
+    alert('Refactored code copied to clipboard!');
+  }).catch(() => {
+    alert('Failed to copy to clipboard.');
+  });
+}
+

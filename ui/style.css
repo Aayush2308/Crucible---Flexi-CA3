@@ -459,7 +459,84 @@ body {
   color: #a6adc8;
   line-height: 1.6;
 }
-.report-findings {
-  margin-top: 10px;
+.report-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.btn-autofix {
+  background: linear-gradient(135deg, #6c5ce7, #0984e3);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(108, 92, 231, 0.3);
+}
+
+.btn-autofix:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(108, 92, 231, 0.5);
+}
+
+.autofix-panel {
+  margin: 12px 0;
+  background: #111827;
+  border: 1px solid rgba(108, 92, 231, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+.autofix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(108, 92, 231, 0.15);
+  border-bottom: 1px solid rgba(108, 92, 231, 0.3);
+}
+
+.autofix-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #a29bfe;
+}
+
+.autofix-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.autofix-explanation {
+  padding: 8px 14px;
+  font-size: 11px;
+  color: #55efc4;
+  background: rgba(85, 239, 196, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.autofix-code {
+  margin: 0;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: #f1f5f9;
+  background: #0a0f1d;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
 

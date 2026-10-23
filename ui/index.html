@@ -89,9 +89,26 @@
       <div id="report-panel" class="report-panel hidden">
         <div class="report-header">
           <h3>Synthesis & Final Evaluation Report</h3>
-          <span id="report-verdict" class="badge"></span>
+          <div class="report-header-actions">
+            <button id="btn-autofix" class="btn btn-autofix" onclick="generateAutoFix()">✨ Auto-Fix & Refactor</button>
+            <span id="report-verdict" class="badge"></span>
+          </div>
         </div>
         <div id="report-summary" class="report-summary"></div>
+
+        <!-- Collapsible Auto-Fix Panel -->
+        <div id="autofix-panel" class="autofix-panel hidden">
+          <div class="autofix-header">
+            <span class="autofix-title">🛠️ Autonomous Refactored Fix</span>
+            <div class="autofix-actions">
+              <button class="btn btn-sm btn-primary" onclick="applyFixedCode()">Apply to Editor</button>
+              <button class="btn btn-sm btn-secondary" onclick="copyFixedCode()">Copy Code</button>
+            </div>
+          </div>
+          <div id="autofix-explanation" class="autofix-explanation"></div>
+          <pre class="autofix-code"><code id="autofix-code-content"></code></pre>
+        </div>
+
         <div id="report-findings" class="report-findings"></div>
       </div>
     </section>
