@@ -138,6 +138,11 @@ class StyleDocAgent(BaseAgent):
                         recommendation="Format code according to PEP 8 guidelines.",
                         pep_rule=viol.get("code"),
                     ))
+            if not fallback_findings:
+                from lib.llm_provider import _generate_default_mock
+                mock_set = _generate_default_mock(FindingSet, system_prompt, user_prompt, self.agent_name)
+                fallback_findings = mock_set.findings
+
             finding_set = FindingSet(
                 agent=self.agent_name,
                 round=state.get("current_round", 0),
